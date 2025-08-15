@@ -19,7 +19,7 @@ jobs:
           pip install -r requirements-min.txt
       - name: Dry-run pipeline
         run: |
-          python -m src.auto_runner --config configs/default.yaml --topics topics/queue.latin_v1_001.yaml --dry-run
+          python -m src.auto_runner --config configs/default.ci.yaml --topics topics/queue.latin_v1_001.yaml --dry-run
       - name: Validate SFT/DPO schemas
         run: |
           python -m src.validate_jsonl --input datasets/sft/latin_v1_001.jsonl --schema schemas/sft.schema.json
