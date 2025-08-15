@@ -9,6 +9,7 @@ import argparse, json
 from pathlib import Path
 from .config import load_config
 from .utils.logging import write_json, now_iso
+from .constants import ENCODER_NAME
 
 def main():
     ap = argparse.ArgumentParser()
@@ -20,11 +21,11 @@ def main():
     indices = Path(cfg["paths"]["indices"])
     indices.mkdir(parents=True, exist_ok=True)
     meta = {
-        "encoder":"intfloat/multilingual-e5-base",
+        "encoder": ENCODER_NAME,
         "built_at": now_iso(),
         "faiss": "todo:version",
         "bm25": "rank_bm25",
-        "notes":"stub meta in dry-run"
+        "notes": "stub meta in dry-run",
     }
     write_json(indices/"meta.json", meta)
     print(f"[chunk_and_index] wrote {indices/'meta.json'}")
