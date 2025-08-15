@@ -25,7 +25,7 @@ def main():
     args = ap.parse_args()
 
     cfg = load_config(args.config)
-    model_name = cfg["personas"]["model"].split('/')[-1]
+    model_name = os.path.basename(cfg["personas"]["model"])
     topics = _load_topics(args.topics)
     batch_id = cfg["batch_id"]
 
