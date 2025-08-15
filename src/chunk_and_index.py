@@ -35,12 +35,12 @@ from .utils.logging import now_iso, write_json
 CHUNK_WORDS = 200  # number of whitespace-delimited tokens per chunk
 
 
-def chunk_text(text: str, size: int = CHUNK_WORDS) -> Iterable[str]:
-    """Yield ``size``-word chunks from ``text``."""
+def chunk_text(text: str, size: int = CHUNK_WORDS) -> Iterable[List[str]]:
+    """Yield ``size``-word chunks (as lists of strings) from ``text``."""
 
     words = text.split()
     for i in range(0, len(words), size):
-        yield " ".join(words[i : i + size])
+        yield words[i : i + size]
 
 
 def file_checksum(path: Path) -> str:
