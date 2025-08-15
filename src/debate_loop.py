@@ -125,9 +125,9 @@ def _hybrid_search(query: str, docs, bm25, encoder, f_index, k=6):
 
     scores = {}
     for rank, idx in enumerate(bm_order, start=1):
-        scores[idx] = scores.get(idx, 0.0) + 1.0 / (k + rank)
+        scores[idx] = scores.get(idx, 0.0) + 1.0 / (60 + rank)
     for rank, idx in enumerate(dense_order, start=1):
-        scores[idx] = scores.get(idx, 0.0) + 1.0 / (k + rank)
+        scores[idx] = scores.get(idx, 0.0) + 1.0 / (60 + rank)
 
     top = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)[:k]
     return [
