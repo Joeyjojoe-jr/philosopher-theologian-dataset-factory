@@ -24,13 +24,13 @@ def _passes_gate(metrics: dict, thresholds: dict) -> bool:
     """Check if a turn's metrics meet the quality thresholds."""
 
     return (
-        thresholds["min_words"] <= metrics["words"] <= thresholds["max_words"]
+        thresholds["min_words"] <= metrics.get("words", 0) <= thresholds["max_words"]
         and thresholds["min_citations"]
-        <= metrics["citations"]
+        <= metrics.get("citations", 0)
         <= thresholds["max_citations"]
-        and metrics["support_rate"] >= thresholds["min_support_rate"]
-        and metrics["latin_score"] >= thresholds["min_latin_score"]
-        and metrics["novelty"] <= thresholds["novelty_jaccard_max"]
+        and metrics.get("support_rate", 0.0) >= thresholds["min_support_rate"]
+        and metrics.get("latin_score", 0.0) >= thresholds["min_latin_score"]
+        and metrics.get("novelty", 1.0) <= thresholds["novelty_jaccard_max"]
     )
 
 
