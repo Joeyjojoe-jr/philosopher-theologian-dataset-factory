@@ -1,0 +1,20 @@
+# Core
+pyyaml==6.0.2
+jsonschema==4.23.0
+rich==13.7.1
+
+# Retrieval
+rank_bm25==0.2.2
+faiss-cpu==1.8.0.post3
+
+# Embeddings (local)
+sentence-transformers==3.0.1
+
+# Models (local)
+transformers==4.43.3
+accelerate==0.33.0
+bitsandbytes==0.43.3
+
+# Utils
+numpy==1.26.4
+tqdm==4.66.4

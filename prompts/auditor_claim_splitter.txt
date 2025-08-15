@@ -1,0 +1,2 @@
+# Auditor — Claim Splitter
+Task: Split the input Latin paragraph into atomic claims (short, testable). Output JSON array of claim strings only.

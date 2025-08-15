@@ -1,0 +1,12 @@
+# topics/queue.latin_v1_001.yaml
+batch_id: "latin_v1_001"
+seed: 20250815
+turns: 3
+persona_order: ["Aquinas","Aristotle","Augustine"]
+topics:
+  - "De gratia et libero arbitrio"
+  - "De natura boni et mali"
+  - "De felicitate secundum virtutem"
+bounds:
+  words: {min: 120, max: 180}
+  citations: {min: 1, max: 2}

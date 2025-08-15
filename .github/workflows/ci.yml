@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-min.txt
+      - name: Dry-run pipeline
+        run: |
+          python -m src.auto_runner --config configs/default.yaml --topics topics/queue.latin_v1_001.yaml --dry-run
+      - name: Validate SFT/DPO schemas
+        run: |
+          python -m src.validate_jsonl --input datasets/sft/latin_v1_001.jsonl --schema schemas/sft.schema.json
+          python -m src.validate_jsonl --input datasets/dpo/latin_v1_001.jsonl --schema schemas/dpo.schema.json

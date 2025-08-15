@@ -1,0 +1,6 @@
+# Auditor — Verdicting
+For each claim, consult retrieval results, then emit for each claim:
+- verdict: one of [correct, unsupported, contradicted, misattributed, anachronistic]
+- explanation: short
+- evidence_refs: list of objects: {{work, ref}} (only if supported)
+Output JSON with fields: claims[], support_rate (correct/total).

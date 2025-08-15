@@ -1,0 +1,32 @@
+# configs/default.yaml
+batch_id: "latin_v1_001"
+seed: 20250815
+
+personas:
+  order: ["Aquinas", "Aristotle", "Augustine"]
+  model: "meta-llama/Meta-Llama-3-8B-Instruct"
+  load:
+    dtype: "fp16"
+    quant_4bit: true
+
+generator:
+  min_words: 120
+  max_words: 180
+  min_citations: 1
+  max_citations: 2
+
+auditor:
+  bm25_k: 50
+  dense_k: 50
+  reranker: false
+
+gate:
+  min_support_rate: 0.80
+  min_latin_score: 0.20
+  novelty_jaccard_max: 0.85
+
+paths:
+  corpora: "/mnt/ssd1/PTDF/corpora"
+  indices: "/mnt/ssd1/PTDF/indices"
+  runs: "/mnt/ssd1/PTDF/runs"
+  datasets: "/mnt/data_hdd/PTDF/datasets"

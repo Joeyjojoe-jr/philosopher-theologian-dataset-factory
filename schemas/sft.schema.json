@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "id",
+    "instruction",
+    "response",
+    "meta"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "instruction": {
+      "type": "string"
+    },
+    "response": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "speaker",
+        "topic",
+        "citations",
+        "provenance",
+        "audit_summary",
+        "batch_id",
+        "encoder",
+        "model"
+      ],
+      "properties": {
+        "speaker": {
+          "type": "string"
+        },
+        "topic": {
+          "type": "string"
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "work",
+              "ref"
+            ],
+            "properties": {
+              "work": {
+                "type": "string"
+              },
+              "ref": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "provenance": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "work",
+              "ref"
+            ],
+            "properties": {
+              "work": {
+                "type": "string"
+              },
+              "ref": {
+                "type": "string"
+              },
+              "snippet": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "audit_summary": {
+          "type": "object",
+          "required": [
+            "claims",
+            "correct",
+            "support_rate"
+          ],
+          "properties": {
+            "claims": {
+              "type": "integer"
+            },
+            "correct": {
+              "type": "integer"
+            },
+            "support_rate": {
+              "type": "number"
+            }
+          }
+        },
+        "batch_id": {
+          "type": "string"
+        },
+        "encoder": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

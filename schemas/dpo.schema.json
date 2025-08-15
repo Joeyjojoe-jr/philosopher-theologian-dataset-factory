@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "id",
+    "prompt",
+    "chosen",
+    "rejected",
+    "meta"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "prompt": {
+      "type": "string"
+    },
+    "chosen": {
+      "type": "string"
+    },
+    "rejected": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "speaker",
+        "topic",
+        "batch_id"
+      ],
+      "properties": {
+        "speaker": {
+          "type": "string"
+        },
+        "topic": {
+          "type": "string"
+        },
+        "batch_id": {
+          "type": "string"
+        },
+        "audit_diffs": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
