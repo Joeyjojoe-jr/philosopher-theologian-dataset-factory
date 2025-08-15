@@ -9,6 +9,8 @@ from pathlib import Path
 from .config import load_config
 from .utils.logging import write_json, now_iso
 
+ENCODER_NAME = "intfloat/multilingual-e5-base"
+
 def _load_topics(path: str):
     import yaml
     with open(path, "r", encoding="utf-8") as f:
@@ -62,7 +64,7 @@ def main():
                     "provenance": [{"work":"Summa Theologiae I-II","ref":"q109 a2","snippet":"gratia non tollit naturam"}],
                     "audit_summary": audit,
                     "batch_id": batch_id,
-                    "encoder": "intfloat/multilingual-e5-base",
+                    "encoder": ENCODER_NAME,
                     "model": "Meta-Llama-3-8B-Instruct",
                     "commit": ""
                 }
@@ -92,7 +94,7 @@ def main():
         "kpis":{"support_rate_avg":0.8,"latinness_avg":0.25,"citations_avg":1.5,"novelty_max":0.8},
         "counts":{"topics":len(topics["topics"]),"turns_total":len(topics["topics"])*len(speakers),"accepted":len(topics["topics"])*len(speakers),"rejected":0},
         "artifacts":{"sft":str(sft_path),"dpo":str(dpo_path)},
-        "versions":{"encoder":"intfloat/multilingual-e5-base","model":"Meta-Llama-3-8B-Instruct"},
+        "versions":{"encoder":ENCODER_NAME,"model":"Meta-Llama-3-8B-Instruct"},
         "created_at": now_iso()
     }
     write_json(runs_dir/"summary.json", summary)
