@@ -10,5 +10,5 @@ def extract_claims(text: str) -> List[str]:
     The function performs a naive split on punctuation and returns
     non-empty trimmed sentences.
     """
-    sentences = [s.strip() for s in re.split(r"[.!?]\s*", text.strip()) if s.strip()]
+    sentences = [stripped for s in re.split(r"[.!?]\s*", text.strip()) if (stripped := s.strip())]
     return sentences
