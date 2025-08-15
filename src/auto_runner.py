@@ -4,22 +4,32 @@ Purpose: End-to-end runner. In --dry-run, synthesizes artifacts conforming to sc
 CLI:
   python -m src.auto_runner --config configs/default.yaml --topics topics/queue.latin_v1_001.yaml [--dry-run]
 """
-import argparse, json, uuid, os, random
+
+import argparse
+import json
+import uuid
 from pathlib import Path
 from .config import load_config
 from .utils.logging import write_json, now_iso
 
+
 def _load_topics(path: str):
     import yaml
+
     with open(path, "r", encoding="utf-8") as f:
         y = yaml.safe_load(f)
     return y
+
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
     ap.add_argument("--topics", required=True)
-    ap.add_argument("--dry-run", action="store_true", help="Generate placeholder artifacts without ML")
+    ap.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Generate placeholder artifacts without ML",
+    )
     args = ap.parse_args()
 
     cfg = load_config(args.config)
@@ -58,23 +68,36 @@ def main():
                 "meta": {
                     "speaker": sp,
                     "topic": t,
-                    "citations": [{"work":"Summa Theologiae I-II","ref":"q109 a2"}],
-                    "provenance": [{"work":"Summa Theologiae I-II","ref":"q109 a2","snippet":"gratia non tollit naturam"}],
+                    "citations": [{"work": "Summa Theologiae I-II", "ref": "q109 a2"}],
+                    "provenance": [
+                        {
+                            "work": "Summa Theologiae I-II",
+                            "ref": "q109 a2",
+                            "snippet": "gratia non tollit naturam",
+                        }
+                    ],
                     "audit_summary": audit,
                     "batch_id": batch_id,
                     "encoder": "intfloat/multilingual-e5-base",
                     "model": "Meta-Llama-3-8B-Instruct",
-                    "commit": ""
-                }
+                    "commit": "",
+                },
             }
             sft_items.append(sft)
-            dpo_items.append({
-                "id": f"{batch_id}.{uuid.uuid4().hex[:8]}",
-                "prompt": t,
-                "chosen": accepted_text,
-                "rejected": rejected_text,
-                "meta": {"speaker": sp, "topic": t, "batch_id": batch_id, "audit_diffs": "stub"}
-            })
+            dpo_items.append(
+                {
+                    "id": f"{batch_id}.{uuid.uuid4().hex[:8]}",
+                    "prompt": t,
+                    "chosen": accepted_text,
+                    "rejected": rejected_text,
+                    "meta": {
+                        "speaker": sp,
+                        "topic": t,
+                        "batch_id": batch_id,
+                        "audit_diffs": "stub",
+                    },
+                }
+            )
 
     # Write shard files
     sft_path = datasets_dir / "sft" / f"{batch_id}.jsonl"
@@ -89,14 +112,30 @@ def main():
     # Write summary
     summary = {
         "batch_id": batch_id,
-        "kpis":{"support_rate_avg":0.8,"latinness_avg":0.25,"citations_avg":1.5,"novelty_max":0.8},
-        "counts":{"topics":len(topics["topics"]),"turns_total":len(topics["topics"])*len(speakers),"accepted":len(topics["topics"])*len(speakers),"rejected":0},
-        "artifacts":{"sft":str(sft_path),"dpo":str(dpo_path)},
-        "versions":{"encoder":"intfloat/multilingual-e5-base","model":"Meta-Llama-3-8B-Instruct"},
-        "created_at": now_iso()
+        "kpis": {
+            "support_rate_avg": 0.8,
+            "latinness_avg": 0.25,
+            "citations_avg": 1.5,
+            "novelty_max": 0.8,
+        },
+        "counts": {
+            "topics": len(topics["topics"]),
+            "turns_total": len(topics["topics"]) * len(speakers),
+            "accepted": len(topics["topics"]) * len(speakers),
+            "rejected": 0,
+        },
+        "artifacts": {"sft": str(sft_path), "dpo": str(dpo_path)},
+        "versions": {
+            "encoder": "intfloat/multilingual-e5-base",
+            "model": "Meta-Llama-3-8B-Instruct",
+        },
+        "created_at": now_iso(),
     }
-    write_json(runs_dir/"summary.json", summary)
-    print(f"[dry-run] Wrote {sft_path} and {dpo_path}\nSummary: {runs_dir/'summary.json'}")
+    write_json(runs_dir / "summary.json", summary)
+    print(
+        f"[dry-run] Wrote {sft_path} and {dpo_path}\nSummary: {runs_dir/'summary.json'}"
+    )
+
 
 if __name__ == "__main__":
     main()

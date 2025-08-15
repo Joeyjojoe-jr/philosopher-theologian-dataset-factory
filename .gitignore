@@ -5,6 +5,8 @@ indices/
 runs/
 datasets/
 .cache/
+.ruff_cache/
+.coverage
 *.egg-info/
 dist/
 build/
