@@ -79,15 +79,18 @@ def main() -> None:
     accepted_dir.mkdir(parents=True, exist_ok=True)
     rejected_dir.mkdir(parents=True, exist_ok=True)
 
-    thresholds = {
-        "min_words": cfg["generator"]["min_words"],
-        "max_words": cfg["generator"]["max_words"],
-        "min_citations": cfg["generator"]["min_citations"],
-        "max_citations": cfg["generator"]["max_citations"],
-        "min_support_rate": cfg["gate"]["min_support_rate"],
-        "min_latin_score": cfg["gate"]["min_latin_score"],
-        "novelty_jaccard_max": cfg["gate"].get("novelty_jaccard_max", 1.0),
-    }
+    try:
+        thresholds = {
+            "min_words": cfg["generator"]["min_words"],
+            "max_words": cfg["generator"]["max_words"],
+            "min_citations": cfg["generator"]["min_citations"],
+            "max_citations": cfg["generator"]["max_citations"],
+            "min_support_rate": cfg["gate"]["min_support_rate"],
+            "min_latin_score": cfg["gate"]["min_latin_score"],
+            "novelty_jaccard_max": cfg["gate"].get("novelty_jaccard_max", 1.0),
+        }
+    except KeyError as e:
+        raise ValueError(f"Missing required key in config file: {e}") from e
 
     counts = {"accepted": 0, "rejected": 0}
 
