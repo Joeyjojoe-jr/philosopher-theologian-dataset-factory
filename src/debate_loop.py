@@ -109,7 +109,7 @@ def _prepare_retrieval(corpora_dir: Path):
 
 
 def _hybrid_search(query: str, docs, bm25, encoder, f_index, k=6):
-    """Return top-k context snippets using BM25 + FAISS."""
+    """Return top-k context snippets using BM25 and FAISS fused via RRF."""
 
     if not docs:
         return []
@@ -121,12 +121,14 @@ def _hybrid_search(query: str, docs, bm25, encoder, f_index, k=6):
     q_emb = encoder.encode([query], show_progress_bar=False)
     faiss.normalize_L2(q_emb)
     dense_scores, dense_ids = f_index.search(q_emb, k)
+    dense_order = np.argsort(dense_scores[0])[::-1][:k]
+    dense_order = dense_ids[0][dense_order]
 
     scores = {}
-    for idx in bm_order:
-        scores[idx] = max(scores.get(idx, 0.0), float(bm_scores[idx]))
-    for i, idx in enumerate(dense_ids[0]):
-        scores[idx] = max(scores.get(idx, 0.0), float(dense_scores[0][i]))
+    for rank, idx in enumerate(bm_order, start=1):
+        scores[idx] = scores.get(idx, 0.0) + 1.0 / (k + rank)
+    for rank, idx in enumerate(dense_order, start=1):
+        scores[idx] = scores.get(idx, 0.0) + 1.0 / (k + rank)
 
     top = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)[:k]
     return [
