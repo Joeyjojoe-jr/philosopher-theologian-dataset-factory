@@ -43,11 +43,14 @@ def _latin_score(text: str) -> float:
     for gating; if no alphabetic characters are present the score is 0.
     """
 
-    letters = [c for c in text if c.isalpha()]
-    if not letters:
-        return 0.0
-    latin_letters = [c for c in letters if "a" <= c.lower() <= "z"]
-    return len(latin_letters) / len(letters)
+    latin_count = 0
+    alpha_count = 0
+    for c in text:
+        if c.isalpha():
+            alpha_count += 1
+            if "a" <= c.lower() <= "z":
+                latin_count += 1
+    return latin_count / alpha_count if alpha_count > 0 else 0.0
 
 
 def _load_json(path: Path):
