@@ -202,7 +202,7 @@ def main():
     for topic in topics_yaml["topics"]:
         history: List[str] = []
         for i in range(max_turns):
-            persona = personas[i % len(personas)]
+            persona = personas_by_name[persona_order[i % len(persona_order)]]
             # retrieval
             query = topic + " " + " ".join(history)
             ctx = _hybrid_search(query, docs, bm25, encoder, f_index, k=6)
