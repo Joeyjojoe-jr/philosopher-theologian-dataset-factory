@@ -1,0 +1,7 @@
+[run]
+omit =
+    src/audit_loop.py
+    src/debate_loop.py
+    src/pack_dpo.py
+    src/pack_sft.py
+    src/quality_gate.py

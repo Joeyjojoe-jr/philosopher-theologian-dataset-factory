@@ -11,25 +11,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-      - name: Debug Python & CWD
-        run: |
-          python -V
-          which python
-          pwd
-          ls -la
         with:
           python-version: '3.11'
-      - name: Install minimal deps
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r requirements-min.txt
+          pip install -r requirements-min.txt
+          pip install ruff black pytest pytest-cov
+      - name: Lint
+        run: |
+          ruff src tests
+          black --check src tests
+      - name: Test
+        run: |
+          pytest --cov=src --cov-report=term --cov-fail-under=80
       - name: Dry-run pipeline
         run: |
           rm -rf runs datasets
-          mkdir -p runs datasets
-          mkdir -p data/corpora indices
+          mkdir -p runs datasets data/corpora indices
           python -m src.auto_runner --config configs/default.ci.yaml --topics topics/queue.latin_v1_001.yaml --dry-run
-      - name: Validate SFT/DPO schemas
-        run: |
           python -m src.validate_jsonl --input datasets/sft/latin_v1_001.jsonl --schema schemas/sft.schema.json
           python -m src.validate_jsonl --input datasets/dpo/latin_v1_001.jsonl --schema schemas/dpo.schema.json
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dry-run-artifacts
+          path: |
+            datasets
+            runs/latin_v1_001/summary.json

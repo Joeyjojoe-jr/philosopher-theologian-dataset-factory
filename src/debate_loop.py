@@ -5,14 +5,18 @@ Inputs: --topics YAML path
 Outputs: runs/<batch_id>/generated/*.json
 Dry-run: no-op (auto_runner fabricates SFT/DPO directly).
 """
+
 import argparse
-from .config import load_config
+
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--topics", required=True)
-    args = ap.parse_args()
-    print("[debate_loop] Placeholder. Use auto_runner --dry-run or implement model generation.")
+    ap.parse_args()
+    print(
+        "[debate_loop] Placeholder. Use auto_runner --dry-run or implement model generation."
+    )
+
 
 if __name__ == "__main__":
     main()
