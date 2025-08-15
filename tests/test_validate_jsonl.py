@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def test_validate_jsonl_ok(valid_sft_jsonl):
-    schema = Path("schemas/sft.schema.json")
+    schema = Path(__file__).parent.parent / "schemas/sft.schema.json"
     result = subprocess.run(
         [
             sys.executable,
