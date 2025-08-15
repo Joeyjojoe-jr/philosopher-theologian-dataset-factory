@@ -50,7 +50,9 @@ def main():
         rejected_text = f"Textus reiectus pro DPO ad {t} (exempli gratia)."
         for sp in speakers:
             turn_id = f"{batch_id}.{uuid.uuid4().hex[:8]}"
-            audit = {"claims": 5, "correct": 4, "support_rate": 0.8}
+            audit = {"claims": 5, "correct": 4}
+            correct, total = audit.get("correct"), audit.get("claims")
+            audit["support_rate"] = (correct / total) if correct is not None and total else 0.0
             sft = {
                 "id": turn_id,
                 "instruction": t,
