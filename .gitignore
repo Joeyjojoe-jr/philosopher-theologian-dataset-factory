@@ -8,3 +8,5 @@ datasets/
 *.egg-info/
 dist/
 build/
+/runs
+/datasets
