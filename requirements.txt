@@ -18,3 +18,5 @@ bitsandbytes==0.43.3
 # Utils
 numpy==1.26.4
 tqdm==4.66.4
+# Testing
+pytest==7.4.4

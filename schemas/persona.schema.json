@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Persona",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "style",
+    "voice",
+    "allowed_sources",
+    "forbidden_moves",
+    "citation_policy",
+    "example_turns"
+  ],
+  "properties": {
+    "id": {"type": "string"},
+    "version": {"type": "string"},
+    "style": {"type": "string"},
+    "voice": {"type": "string"},
+    "allowed_sources": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "forbidden_moves": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "citation_policy": {"type": "string"},
+    "example_turns": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}
