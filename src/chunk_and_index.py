@@ -86,9 +86,9 @@ def main() -> None:
     for path in sorted(corpora_dir.rglob("*.txt")):
         with open(path, "r", encoding="utf-8") as f:
             text = f.read()
-        for ch in chunk_text(text):
-            chunks.append(ch)
-            tokenized.append(ch.split())
+        for token_list in chunk_text(text):
+            chunks.append(" ".join(token_list))
+            tokenized.append(token_list)
 
     if not chunks:
         raise ValueError(f"no .txt corpora found under {corpora_dir}")
