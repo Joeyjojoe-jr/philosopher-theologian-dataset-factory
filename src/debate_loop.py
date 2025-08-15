@@ -121,8 +121,7 @@ def _hybrid_search(query: str, docs, bm25, encoder, f_index, k=6):
     q_emb = encoder.encode([query], show_progress_bar=False)
     faiss.normalize_L2(q_emb)
     dense_scores, dense_ids = f_index.search(q_emb, k)
-    dense_order = np.argsort(dense_scores[0])[::-1][:k]
-    dense_order = dense_ids[0][dense_order]
+    dense_order = dense_ids[0]
 
     scores = {}
     for rank, idx in enumerate(bm_order, start=1):
