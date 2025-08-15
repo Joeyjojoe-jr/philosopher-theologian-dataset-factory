@@ -41,14 +41,15 @@ def main() -> None:
     args = ap.parse_args()
 
     cfg = load_config(args.config)
+    gen_cfg, gate_cfg = cfg["generator"], cfg["gate"]
     thresholds = {
-        "min_words": cfg["generator"]["min_words"],
-        "max_words": cfg["generator"]["max_words"],
-        "min_citations": cfg["generator"]["min_citations"],
-        "max_citations": cfg["generator"]["max_citations"],
-        "min_support_rate": cfg["gate"]["min_support_rate"],
-        "min_latin_score": cfg["gate"]["min_latin_score"],
-        "novelty_jaccard_max": cfg["gate"]["novelty_jaccard_max"],
+        "min_words": gen_cfg["min_words"],
+        "max_words": gen_cfg["max_words"],
+        "min_citations": gen_cfg["min_citations"],
+        "max_citations": gen_cfg["max_citations"],
+        "min_support_rate": gate_cfg["min_support_rate"],
+        "min_latin_score": gate_cfg["min_latin_score"],
+        "novelty_jaccard_max": gate_cfg["novelty_jaccard_max"],
     }
 
     runs_dir = Path(cfg["paths"]["runs"]) / args.batch
