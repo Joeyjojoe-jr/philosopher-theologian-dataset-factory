@@ -9,7 +9,7 @@ class SimpleRetriever:
         self.index = [doc.lower().split() for doc in corpus]
 
     def search(self, query: str, k: int = 3) -> List[Tuple[str, int]]:
-        q_tokens = query.lower().split()
+        q_tokens = set(query.lower().split())
         scores = []
         for tokens in self.index:
             score = sum(1 for t in tokens if t in q_tokens)
