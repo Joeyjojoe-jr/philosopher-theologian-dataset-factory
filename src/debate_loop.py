@@ -142,7 +142,7 @@ def _load_model(model_name: str):
     try:
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name)
-    except Exception:
+    except (OSError, ValueError):
         tokenizer = AutoTokenizer.from_pretrained(fallback)
         model = AutoModelForCausalLM.from_pretrained(fallback)
         used = fallback
