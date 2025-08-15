@@ -45,8 +45,11 @@ def _load_turns_from_dir(dir_path: Path) -> Dict[Tuple[str, str], Dict[str, Any]
         return turns
 
     for fp in sorted(dir_path.glob("*.json")):
-        turn = _load_turn(fp)
-        turns[(turn["speaker"], turn["topic"])] = turn
+        try:
+            turn = _load_turn(fp)
+            turns[(turn["speaker"], turn["topic"])] = turn
+        except (json.JSONDecodeError, KeyError) as e:
+            print(f"[pack_dpo] Warning: Skipping invalid turn file {fp}. Reason: {e}")
     return turns
 
 
