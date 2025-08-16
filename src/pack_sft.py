@@ -28,9 +28,10 @@ turn is::
         }
     }
 
-Only files under ``runs/<batch_id>/accepted`` are inspected.  The resulting
-shard is written to ``datasets/sft/<batch_id>.jsonl`` and can be validated via
-``python -m src.validate_jsonl``.
+By default files under ``runs/<batch_id>/accepted`` are inspected and the
+resulting shard is written to ``datasets/sft/<batch_id>.jsonl``.  Alternative
+locations can be supplied via ``--runs-dir`` and ``--datasets-dir``.
+The output can be validated via ``python -m src.validate_jsonl``.
 """
 
 from __future__ import annotations
@@ -67,8 +68,7 @@ def _load_turn(path: Path) -> Dict[str, Any]:
         or data.get("prompt", ""),
         "citations": meta.get("citations") or data.get("citations", []),
         "provenance": meta.get("provenance") or data.get("provenance", []),
-        "audit_summary": meta.get("audit_summary")
-        or data.get("audit_summary", {}),
+        "audit_summary": meta.get("audit_summary") or data.get("audit_summary", {}),
         "encoder": meta.get("encoder", ""),
         "model": meta.get("model", ""),
         "commit": meta.get("commit", ""),
@@ -79,11 +79,21 @@ def _load_turn(path: Path) -> Dict[str, Any]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--batch", required=True, help="Batch identifier")
+    ap.add_argument(
+        "--runs-dir",
+        default="runs",
+        help="Root directory containing run artifacts (default: runs)",
+    )
+    ap.add_argument(
+        "--datasets-dir",
+        default="datasets",
+        help="Root directory for dataset shards (default: datasets)",
+    )
     args = ap.parse_args()
 
     batch_id = args.batch
-    runs_dir = Path("runs") / batch_id / "accepted"
-    out_dir = Path("datasets") / "sft"
+    runs_dir = Path(args.runs_dir) / batch_id / "accepted"
+    out_dir = Path(args.datasets_dir) / "sft"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if not runs_dir.exists():
@@ -120,4 +130,3 @@ def main() -> None:
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry
     main()
-

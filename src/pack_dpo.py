@@ -2,8 +2,10 @@
 ================
 
 Create DPO (Direct Preference Optimisation) training pairs for a given batch.
-The script reads accepted and rejected turns from ``runs/<batch_id>`` and
-emits a JSONL shard matching :mod:`schemas/dpo.schema.json`.
+The script reads accepted and rejected turns from ``runs/<batch_id>`` by
+default and emits a JSONL shard matching :mod:`schemas/dpo.schema.json`.
+Alternative root directories can be provided via ``--runs-dir`` and
+``--datasets-dir``.
 
 For each ``(speaker, topic)`` combination exactly one entry is produced.  A
 rejected turn with the same ``speaker`` and ``topic`` is preferred; if none is
@@ -44,13 +46,23 @@ def _load_turn(path: Path) -> Dict[str, Any]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--batch", required=True, help="Batch identifier")
+    ap.add_argument(
+        "--runs-dir",
+        default="runs",
+        help="Root directory containing run artifacts (default: runs)",
+    )
+    ap.add_argument(
+        "--datasets-dir",
+        default="datasets",
+        help="Root directory for dataset shards (default: datasets)",
+    )
     args = ap.parse_args()
 
     batch_id = args.batch
-    base_dir = Path("runs") / batch_id
+    base_dir = Path(args.runs_dir) / batch_id
     acc_dir = base_dir / "accepted"
     rej_dir = base_dir / "rejected"
-    out_dir = Path("datasets") / "dpo"
+    out_dir = Path(args.datasets_dir) / "dpo"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if not acc_dir.exists():
@@ -103,4 +115,3 @@ def main() -> None:
 
 if __name__ == "__main__":  # pragma: no cover - CLI entry
     main()
-
